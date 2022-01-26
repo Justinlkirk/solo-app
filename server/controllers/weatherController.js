@@ -1,12 +1,11 @@
 const axios = require('axios');
 
 const weatherController = {
-  getCurrentWeather: (req, res, next) => {
-    const access_key = '35376647fc91476088981059cd08614a',
-      query = 'Lumberton, Texas',
-      url = `http://api.weatherstack.com/current?access_key=${access_key}&query=${query}`;
+  access_key: '35376647fc91476088981059cd08614a',
 
-    console.log('line 7');
+  getCurrentWeather: (req, res, next) => {
+    const location = res.locals.location,
+      url = `http://api.weatherstack.com/current?access_key=${weatherController.access_key}&query=${location}`;
 
     axios.get(url)
       //.then(data => data.json())
@@ -20,8 +19,45 @@ const weatherController = {
         error.log = err.error.info + ' ' + err.error.type
         next(error);
       })
+  },
 
-    console.log('line 23')
+  // getForecast: (req, res, next) => {
+  //   const location = res.locals.location,
+  //     url = `http://api.weatherstack.com/forecast?access_key=${weatherController.access_key}&query=${location}&forecast_days=2`;
+
+  //     axios.get(url)
+  //     //.then(data => data.json())
+  //     .then(data => {
+  //       res.locals.forecast = data.data;
+  //       next();
+  //     }).catch(err => {
+  //       console.log(err);
+  //       const error = {};
+  //       error.status = err.error.code;
+  //       error.log = err.error.info + ' ' + err.error.type
+  //       next(error);
+  //     })
+  // },
+
+  determineClothes: (req, res, next) => {
+    try {
+      const weather = res.locals.currentWeather.current
+      temp = weather.feelslike,
+      tempInFar = (temp * 1.8) + 32,
+      precip = weather.precip,
+      sweaterWeather = tempInFar <= res.locals.sweatertemp,
+      umbrellaWeather = precip > 0;
+      if (res.locals.location === 'Miami, Florida') umbrellaWeather = true;
+
+      if (sweaterWeather && umbrellaWeather) res.locals.advice = 'Wear a sweater and bring an umbrella';
+      else if (sweaterWeather) res.locals.advice = 'Wear a sweater';
+      else if (umbrellaWeather) res.locals.advice = 'Bring an umbrella';
+      else res.locals.advice = 'Do you boo boo';
+
+      next()
+    } catch {
+      next({ log: 'Error in weatherController.determineClothes()'});
+    }
   }
 }
 

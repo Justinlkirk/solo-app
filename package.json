@@ -4,10 +4,16 @@
   "description": "Solo project thats gonna so much stuff for so many things",
   "main": "server/server.js",
   "scripts": {
-    "start": "node server/server.js",
+    "start": "nodemon server/server.js",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "webpack serve",
+    "dev": "webpack serve --open",
     "build": "webpack"
+  },
+  "nodemonConfig": {
+    "ignore": [
+      "build",
+      "client"
+    ]
   },
   "keywords": [
     "Weather"
@@ -16,9 +22,11 @@
   "license": "ISC",
   "dependencies": {
     "axios": "^0.25.0",
+    "browserify": "^17.0.0",
     "express": "^4.17.2",
     "node-fetch": "^3.2.0",
     "pg": "^8.7.1",
+    "prop-types": "^15.6.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2"
   },
@@ -27,8 +35,13 @@
     "@babel/preset-env": "^7.16.11",
     "@babel/preset-react": "^7.16.7",
     "babel-loader": "^8.2.3",
+    "concurrently": "^6.0.2",
+    "cross-env": "^7.0.3",
     "css-loader": "^6.5.1",
     "html-webpack-plugin": "^5.5.0",
+    "isomorphic-fetch": "^3.0.0",
+    "node-sass": "^7.0.1",
+    "nodemon": "^2.0.7",
     "sass": "^1.49.0",
     "sass-loader": "^12.4.0",
     "style-loader": "^3.3.1",
