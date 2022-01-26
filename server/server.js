@@ -2,12 +2,13 @@ const path = require('path'),
   express = require('express'),
   app = express(),
   PORT = 3000,
-  databaseController = require('./controllers/databaseController');
+  databaseController = require('./controllers/databaseController'),
+  weatherController = require('./controllers/weatherController');
 
 app.use(express.json());// Formats req.body
 app.use(express.urlencoded({ extended: true }));// Helps parse different data types
 
-app.get('/', 
+app.get('/users', 
   databaseController.getUsers,
   (req, res) => {
     console.log(res.locals);
@@ -15,13 +16,23 @@ app.get('/',
   }
 );
 
-app.post('/',
+app.post('/signUp',
   databaseController.addUser,
   (req, res) => {
     console.log(res.locals);
     res.status(200).json(res.locals);
   }
 );
+
+app.get('/weather',
+  weatherController.getCurrentWeather,
+  (req, res) => {
+    console.log(res.locals);
+    res.status(200).json(res.locals);
+  }
+);
+
+app.use((req, res) => res.sendStatus(404));
 
 app.use((err, req, res, next) => {
   const defaultErr = {
