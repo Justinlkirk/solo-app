@@ -5,26 +5,41 @@ const express = require('express'),
   router.get('*',
     databaseController.getUser,
     (req, res) => {
-      res.setHeader('Access-Control-Allow-Origin', ' * ')
-      res.setHeader('Content-Type', 'application/json')
-      console.log(res.locals);
-      return res.status(200).json(res.locals);
+      res.set('Access-Control-Allow-Origin', ' * ')
+      res.set('Content-Type', 'application/json')
+      console.log(res.locals)
+      return res.status(200).json({ validity: res.locals.validity });
     }
   )
 
   router.post('*',
     databaseController.addUser,
-    (req, res) => res.status(200).json(res.locals)
+    (req, res) => {
+      res.set('Access-Control-Allow-Origin', ' * ')
+      res.set('Content-Type', 'application/json')
+
+      res.status(200).json({ validity: res.locals.validity })
+    }
   )
 
   router.put('*',
     databaseController.updatePreference,
-    (req, res) => res.sendStatus(200)
+    (req, res) => {
+      res.set('Access-Control-Allow-Origin', ' * ')
+      res.set('Content-Type', 'application/json')
+      
+      res.sendStatus(200)
+    }
   )
 
   router.delete('*',
     databaseController.deleteUser,
-    (req, res) => res.sendStatus(200)
+    (req, res) => {
+      res.set('Access-Control-Allow-Origin', ' * ')
+      res.set('Content-Type', 'application/json')
+
+      res.sendStatus(200)
+    }
   )
 
   module.exports = router;

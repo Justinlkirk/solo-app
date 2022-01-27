@@ -17,3 +17,16 @@ h1 {
   margin: auto;
   width: 20%;
 }
+
+p {
+  text-align: center;
+}
+
+button{
+  height:20px; 
+  width:178px; 
+  margin: -20px -50px; 
+  position:relative;
+  top:50%; 
+  left:43.9%;
+}

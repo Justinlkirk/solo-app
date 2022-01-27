@@ -1,5 +1,4 @@
 const { Pool } = require('pg');
-// const { user } = require('pg/lib/defaults');
 const db = require('../models/databaseModel');
 
 const databaseController = {
@@ -9,7 +8,9 @@ const databaseController = {
 
     db.query(queryString)
       .then(data => {
-        res.locals = data.rows[0];
+        if (data.rows.length === 0) res.locals.validity = false;
+        else res.locals.validity = true;
+
         next()
       }).catch((err) => {
         err.log = 'Error in databaseController.getUsers()';
@@ -26,7 +27,9 @@ const databaseController = {
 
     db.query(queryString)
       .then(data => {
-        res.locals = data.rows;
+        if (data.rows.length === 0) res.locals.validity = false;
+        else res.locals.validity = true;
+
         next()
       }).catch((err) => {
         err.log = 'Error in databaseController.addUser()';

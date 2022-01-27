@@ -6,7 +6,7 @@ class LoginForm extends Component {
     this.state = {
       user_name: 'USERNAME',
       password: 'PASSWORD',
-      user: '',
+      invalidLogin: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -20,19 +20,24 @@ class LoginForm extends Component {
   }
 
   handleSubmit(event) {
+    event.preventDefault();
     const { user_name, password } = this.state,
       url = `http://localhost:3000/user/?user_name=${user_name}&password=${password}`
 
-    fetch(url, {method: 'GET', mode: 'no-cors', header: {'Access-Control-Allow-Origin': ' * ', 'Content-Type': 'application/json' }})
-      .then(data => {
-        console.log(data);
-        return data.json();
-      }).then((data) => console.log(data))
+    fetch(url, {method: 'GET', header: {'Access-Control-Allow-Origin': ' * ', 'Content-Type': 'application/json' }})
+      .then(data => data.json())
+      .then((data) => {
+        if (data.validity) this.props.succLogin();
+        else this.setState({ invalidLogin: true })
+      })
+      .catch(err => console.log(err));
       // .then(() => console.log(this.state))
-      event.preventDefault();
   }
 
   render() {
+    const uhOh = [];
+    if (this.state.invalidLogin) uhOh.push(<p className='center'>Invalid login try again</p>)
+
     const { user_name, password } = this.state;
     return (
       <div className='center'>
@@ -40,10 +45,11 @@ class LoginForm extends Component {
         <form onSubmit={this.handleSubmit} className='signUp'>
           <input name="user_name" type="text" placeholder={user_name} onChange={this.handleChange}/>
           <input name="password" type="password" placeholder={password} onChange={this.handleChange}/>
-          <input type='submit' value="login"/>
+          <input className='submit' type='submit' value="login"/>
         </form>
+        {uhOh}
+        <div></div>
         <button onClick={this.props.changeToSignUp}>Sign Up</button>
-        <p>{JSON.stringify(this.state.user)}</p>
       </div>
     );
   }

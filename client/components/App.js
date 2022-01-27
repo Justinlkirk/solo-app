@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
 import SignUpForm from './SignUpForm';
 import LoginForm from './LoginForm';
+import MainPage from './MainPage';
 
 
 class App extends Component {
   constructor(props) {
     super(props)
 
-    this.state = {page: 'signUp'}
+    this.state = { page: 'signUp' }
 
     this.updatePage = this.updatePage.bind(this);
   }
@@ -18,8 +19,10 @@ class App extends Component {
   
   render() {
     const currDisplay = [];
-    if (this.state.page === 'signUp') currDisplay.push(<SignUpForm key = 'signUp' changeToLogin={() => this.updatePage('login')} />);
-    else if (this.state.page === 'login') currDisplay.push(<LoginForm key = 'login' changeToSignUp={() => this.updatePage('signUp')} />);
+    if (this.state.page === 'signUp') currDisplay.push(<SignUpForm key = 'signUp' changeToLogin={() => this.updatePage('login')} succLogin={() => this.updatePage('main')} />);
+    else if (this.state.page === 'login') currDisplay.push(<LoginForm key = 'login' changeToSignUp={() => this.updatePage('signUp')} succLogin={() => this.updatePage('main')} />);
+    else if (this.state.page === 'main') currDisplay.push(<MainPage key = 'main' changeToLogin={() => this.updatePage('login')}/>);
+
     return (
       <div>
         {currDisplay}
@@ -28,15 +31,5 @@ class App extends Component {
     );
   }
 }
-
-{/* <div className='center'>
-        <h1>Login</h1>
-        <form method="POST" action='/login' className='login'>
-          <input name="username" type="text" placeholder="USERNAME"></input>
-          <input name="password" type="password" placeholder="PASSWORD"></input>
-          <input type='submit' value="login"/>
-        </form>
-        <p>{this.fields}</p>
-      </div> */}
 
 export default App;
