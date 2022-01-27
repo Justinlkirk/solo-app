@@ -38,6 +38,7 @@ module.exports = {
     },
     // compress: true,
     // port: 8080
+    proxy: {'/post': 'http://localhost:3000'}
   },
   plugins: [new HtmlWebpackPlugin({
     template: 'index.html',

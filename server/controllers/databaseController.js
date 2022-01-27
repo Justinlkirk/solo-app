@@ -3,13 +3,13 @@ const { Pool } = require('pg');
 const db = require('../models/databaseModel');
 
 const databaseController = {
-  getUsers: (req, res, next) => {
-    console.log('In getUsers')
-    const queryString = 'SELECT users.* FROM users'
+  getUser: (req, res, next) => {
+    const { user_name, password} = req.query,
+      queryString = `SELECT users.* FROM users WHERE users.user_name = '${user_name}' AND users.password = '${password}'`;
 
     db.query(queryString)
       .then(data => {
-        res.locals.users = data.rows;
+        res.locals = data.rows[0];
         next()
       }).catch((err) => {
         err.log = 'Error in databaseController.getUsers()';

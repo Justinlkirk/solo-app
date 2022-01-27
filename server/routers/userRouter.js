@@ -3,8 +3,13 @@ const express = require('express'),
   router = express.Router();
 
   router.get('*',
-    databaseController.findUserTemp,
-    (req, res) => res.status(200).json(res.locals)
+    databaseController.getUser,
+    (req, res) => {
+      res.setHeader('Access-Control-Allow-Origin', ' * ')
+      res.setHeader('Content-Type', 'application/json')
+      console.log(res.locals);
+      return res.status(200).json(res.locals);
+    }
   )
 
   router.post('*',
