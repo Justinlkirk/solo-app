@@ -1,32 +1,47 @@
 .center {
-  margin: auto;
-  width: 50%;
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
 }
 
 h1 {
-  margin: auto;
-  width: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 3;
+}
+
+h2 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  grid-column: 3;
 }
 
 .signUp {
+  display: inline-grid;
+  grid-template-columns: auto auto;
   margin: auto;
-  width: 20%;
+  grid-column: 3;
 }
 
 .login {
+  display: inline-grid;
   margin: auto;
-  width: 20%;
+  grid-column: 3;
 }
 
 p {
+  grid-column: 3;
   text-align: center;
 }
 
-button{
+.button {
   height:20px; 
   width:178px; 
-  margin: -20px -50px; 
-  position:relative;
-  top:50%; 
-  left:43.9%;
+  margin: auto;
+  grid-column: 3;
+}
+
+#signUpSubmit {
+  margin: auto; 
 }

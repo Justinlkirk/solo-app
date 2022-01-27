@@ -3,11 +3,13 @@ const path = require('path'),
   app = express(),
   PORT = 3000,
   userRouter = require('./routers/userRouter'),
-  weatherRouter = require('./routers/weatherRouter');
+  weatherRouter = require('./routers/weatherRouter'),
+  friendsRouter = require('./routers/friendsRouter');
 
 app.use(express.json());// Formats req.body
 app.use(express.urlencoded({ extended: true }));// Helps parse different data types
 
+app.use('/user/friend*', friendsRouter)
 app.use('/user*', userRouter);
 app.use('/weather', weatherRouter);
 

@@ -47,11 +47,11 @@ class LoginForm extends Component {
         <form onSubmit={this.handleSubmit} className='signUp'>
           <input name="user_name" type="text" placeholder={user_name} onChange={this.handleChange}/>
           <input name="password" type="password" placeholder={password} onChange={this.handleChange}/>
-          <input className='submit' type='submit' value="login"/>
+          <input className="button" id="loginSubmit" type='submit' value="login"/>
         </form>
         {uhOh}
         <div></div>
-        <button onClick={this.props.changeToSignUp}>Sign Up</button>
+        <button className="button" onClick={this.props.changeToSignUp}>Need an account?</button>
       </div>
     );
   }

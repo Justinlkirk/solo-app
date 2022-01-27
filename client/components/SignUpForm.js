@@ -8,7 +8,7 @@ class SignUpForm extends Component {
       password: 'PASSWORD',
       sweaterTemp: 'SWEATER TEMPERATURE',
       location: 'LOCATION',
-      info: 'Initial Value'
+      invalidLogin: false
     }
 
     this.handleChange = this.handleChange.bind(this);
@@ -22,32 +22,40 @@ class SignUpForm extends Component {
   }
 
   handleSubmit(event) {
-    const userName = `user_name=${this.user_name}`,
-      password = `password=${this.password}`,
-      sweaterTemp = `sweaterTemp=${this.sweaterTemp}`,
-      location = `location=${this.location}`,
-      url = `http://localhost:3000/user/?${userName}&${password}&${sweaterTemp}&${location}`
-
-    fetch(url)
-      .then(data => {
-        console.log(data)
-      })
     event.preventDefault();
+    const { user_name, password, sweaterTemp, location } = this.state,
+      url = `http://localhost:3000/user/?user_name=${user_name}&password=${password}&sweatertemp=${sweaterTemp}&location=${location}`
+
+      fetch(url, {method: 'POST', header: {'Access-Control-Allow-Origin': ' * ', 'Content-Type': 'application/json' }})
+        .then(data => data.json())
+        .then((data) => {
+          if (data.validity) {
+            this.props.passUsername(this.state.user_name);
+            this.props.succSignUp();
+          }
+          else this.setState({ invalidLogin: true })
+        })
+        .catch(err => console.log(err));
   }
 
   render() {
-    const { sweaterTemp, location, user_name, password } = this.state;
+    const { sweaterTemp, location, user_name, password } = this.state,
+      uhOh = [];
+    if (this.state.invalidLogin) uhOh.push(<p className='center'>Username taken please try again</p>)
+
     return (
       <div className='center'>
         <h1>Sign Up</h1>
         <form onSubmit={this.handleSubmit} className='signUp'>
           <input name="user_name" type="text" placeholder={user_name} onChange={this.handleChange}/>
-          <input name="email" type="text" placeholder={sweaterTemp} onChange={this.handleChange}/>
+          <input name="sweaterTemp" type="text" placeholder={sweaterTemp} onChange={this.handleChange}/>
           <input name="location" type="text" placeholder={location} onChange={this.handleChange}/>
           <input name="password" type="password" placeholder={password} onChange={this.handleChange}/>
-          <input type='submit' value="sign up"/>
+          <br/>
+          <input className="button" id="signUpSubmit" type='submit' value="sign up"/>
         </form>
-        <button onClick={this.props.changeToLogin}>Already a user</button>
+        <button className="button" onClick={this.props.changeToLogin}>Already a user?</button>
+        {uhOh}
       </div>
     );
   }

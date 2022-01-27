@@ -24,7 +24,7 @@ class App extends Component {
   
   render() {
     const currDisplay = [];
-    if (this.state.page === 'signUp') currDisplay.push(<SignUpForm key = 'signUp' changeToLogin={() => this.updatePage('login')} succLogin={() => this.updatePage('main')} passUsername={(user_name) => this.updateUsername(user_name)}/>);
+    if (this.state.page === 'signUp') currDisplay.push(<SignUpForm key = 'signUp' changeToLogin={() => this.updatePage('login')} succSignUp={() => this.updatePage('main')} passUsername={(user_name) => this.updateUsername(user_name)}/>);
     else if (this.state.page === 'login') currDisplay.push(<LoginForm key = 'login' changeToSignUp={() => this.updatePage('signUp')} succLogin={() => this.updatePage('main')} passUsername={(user_name) => this.updateUsername(user_name)}/>);
     else if (this.state.page === 'main') currDisplay.push(<MainPage key = 'main' changeToLogin={() => this.updatePage('login')} user_name={this.state.user_name}/>);
 
