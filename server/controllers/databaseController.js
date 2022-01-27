@@ -39,11 +39,11 @@ const databaseController = {
 
   findUserTemp: (req, res, next) => {
     const info = req.query,
-      queryString = `SELECT users.sweaterTemp, users.location FROM users WHERE users.user_name = '${info.user_name}' AND users.password = '${info.password}'`;
+      queryString = `SELECT users.sweaterTemp, users.location FROM users WHERE users.user_name = '${info.user_name}'`;
 
     db.query(queryString)
       .then(data => {
-        if (data.rows.length === 0) next({log: 'User does not exist'})
+        if (data.rows.length === 0) next({log: 'User does not exist in findUserTemp'})
         else {
           res.locals = data.rows[0];
           next()

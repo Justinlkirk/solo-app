@@ -27,11 +27,13 @@ class LoginForm extends Component {
     fetch(url, {method: 'GET', header: {'Access-Control-Allow-Origin': ' * ', 'Content-Type': 'application/json' }})
       .then(data => data.json())
       .then((data) => {
-        if (data.validity) this.props.succLogin();
+        if (data.validity) {
+          this.props.passUsername(this.state.user_name);
+          this.props.succLogin();
+        }
         else this.setState({ invalidLogin: true })
       })
       .catch(err => console.log(err));
-      // .then(() => console.log(this.state))
   }
 
   render() {

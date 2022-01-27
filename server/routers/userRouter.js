@@ -7,7 +7,7 @@ const express = require('express'),
     (req, res) => {
       res.set('Access-Control-Allow-Origin', ' * ')
       res.set('Content-Type', 'application/json')
-      console.log(res.locals)
+
       return res.status(200).json({ validity: res.locals.validity });
     }
   )

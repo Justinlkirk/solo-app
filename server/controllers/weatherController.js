@@ -40,7 +40,8 @@ const weatherController = {
   // },
 
   determineClothes: (req, res, next) => {
-    try {
+    console.log(res.locals.currentWeather.current, res.locals.sweatertemp)
+    //try {
       const weather = res.locals.currentWeather.current
       temp = weather.feelslike,
       tempInFar = (temp * 1.8) + 32,
@@ -53,11 +54,11 @@ const weatherController = {
       else if (sweaterWeather) res.locals.advice = 'Wear a sweater';
       else if (umbrellaWeather) res.locals.advice = 'Bring an umbrella';
       else res.locals.advice = 'Do you boo boo';
-
+      console.log(res.locals.advice)
       next()
-    } catch {
-      next({ log: 'Error in weatherController.determineClothes()'});
-    }
+    // } catch {
+    //   next({ log: 'Error in weatherController.determineClothes()'});
+    // }
   }
 }
 
