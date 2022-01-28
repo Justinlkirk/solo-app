@@ -1,5 +1,6 @@
 const { Pool } = require('pg');
 const db = require('../models/databaseModel');
+const bcrypt = require('bcrypt');
 
 const databaseController = {
   getFriendsTemp: (req, res, next) => {
@@ -51,17 +52,18 @@ const databaseController = {
   },
 
   addFriend: (req, res, next) => {
+    console.log(req.query)
     const { user_name, friend_name } = req.query,
       queryString = `INSERT INTO follow_list (user_name, friend_name) VALUES ('${user_name}', '${friend_name}')`
 
     db.query(queryString)
       .then(data => {
-        // if (data.rows.length === 0) res.locals.validity = false;
-        // else res.locals.validity = true;
+        if (data.rows.length === 0) res.locals.validity = false;
+        else res.locals.validity = true;
 
         return next()
       }).catch((err) => {
-        err.log = 'Error in databaseController.getUsers()';
+        err.log = 'Error in databaseController.addFriend()';
         return next(err);
       })
   },
@@ -72,7 +74,10 @@ const databaseController = {
 
     db.query(queryString)
       .then(data => {
-        if (data.rows.length === 0 || data.rows[0].password !== password) res.locals.validity = false;
+        console.log('before bcrypt')
+        const equals = bcrypt.compareSync(password, data.rows[0].password)
+        console.log('after bcrypt', equals)
+        if (data.rows.length === 0 || !equals) res.locals.validity = false;
         else res.locals.validity = true;
 
         return next()
@@ -83,14 +88,16 @@ const databaseController = {
   },
 
   addUser: (req, res, next) => {
-    const info = req.query, // ?user_name=Me&password=1234&sweaterTemp=11
-      queryStringLineOne = 'INSERT INTO users (user_name, password, sweatertemp, location)',
-      queryStringLineTwo = ` VALUES ('${info.user_name}', '${info.password}', '${info.sweatertemp}', '${info.location}')`,
+    const info = req.query; // ?user_name=Me&password=1234&sweaterTemp=11
+    bcrypt.hash(info.password, 10, (err, hash) => {
+      const queryStringLineOne = 'INSERT INTO users (user_name, password, sweatertemp, location)',
+      queryStringLineTwo = ` VALUES ('${info.user_name}', '${hash}', '${info.sweatertemp}', '${info.location}')`,
       queryStringLineThree = ' RETURNING *'
       queryString = queryStringLineOne + queryStringLineTwo + queryStringLineThree;
 
-    db.query(queryString)
+      db.query(queryString)
       .then(data => {
+        console.log(data)
         if (data.rows.length === 0) res.locals.validity = false;
         else res.locals.validity = true;
 
@@ -99,6 +106,7 @@ const databaseController = {
         err.log = 'Error in databaseController.addUser()';
         return next(err);
       })
+    });
   },
 
   findUserTemp: (req, res, next) => {

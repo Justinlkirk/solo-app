@@ -49,7 +49,17 @@ module.exports = router;
   // CREATE TABLE users (
   //   _id serial PRIMARY KEY,
   //   user_name VARCHAR ( 50 ) UNIQUE NOT NULL,
-  //   password VARCHAR ( 50 ) NOT NULL,
+  //   password VARCHAR ( 200 ) NOT NULL,
   //   sweaterTemp VARCHAR ( 10 ) NOT NULL,
   //   location VARCHAR (50) NOT NULL
+  // )
+
+  // CREATE TABLE users (
+  //   _id serial PRIMARY KEY,
+  //   user_name VARCHAR ( 50 ) NOT NULL,
+  //   friend_name VARCHAR ( 200 ) NOT NULL,
+  //   FOREIGN KEY (user_name)
+  //     REFERENCES users (user_name),
+  //   FOREIGN KEY (friend_name)
+  //     REFERENCES users (user_name)
   // )

@@ -44,7 +44,7 @@ class MainPage extends Component {
 
   componentDidMount() {
     this.updateWeather();
-    setInterval(this.updateWeather, 10000);
+    // setInterval(this.updateWeather, 10000);
   }
 
   render() {
